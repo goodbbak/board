@@ -46,7 +46,7 @@
 		<div class="col-lg-4"></div>
 		<div class="col-lg-4">
 			<div class="jumbotron" style="padding-top:20px">
-				<form method="post" action="joinAction.jsp">
+				<form id="joinForm" method="post" action="joinAction.jsp">
 					<h3 style="text-align:center;" >회원가입</h3>
 					<div class="form-group">
 						<input type="text" class="form-control" placeholder="아이디" name="userID" maxlength="20"/>
@@ -70,7 +70,7 @@
 					<div class="form-group">
 						<input type="email" class="form-control" placeholder="이메일" name="userEmail" maxlength="20"/>
 					</div>
-					<input type="submit" class="btn btn-primary form-control" value="회원가입"/> 
+					<input type="button" class="btn btn-primary form-control" value="회원가입" onclick="checkForm()"/> 
 				</form>
 			</div>
 		</div>
@@ -78,5 +78,33 @@
 	</div>
 	<script src="https://code.jquery.com/jquery-3.1.1.min.js"></script>
 	<script src="../js/bootstrap.js"></script>
+	<script>
+		function checkForm(){
+			var userID = $("[name='userID']").val();
+			var userPW = $("[name='userPW']").val();
+			var userName = $("[name='userName']").val();
+			var userGender = $("[name='userGender']").val();
+			var userEmail = $("[name='userEmail']").val();
+			
+			if(userID == ''){
+				alert("아이디를 입력해 주세요")
+				$("[name='userID']").focus();				
+			}else if(userPW == ''){
+				alert("비밀번호를 입력해 주세요")
+				$("[name='userPW']").focus();	
+			}else if(userName == ''){
+				alert("이름을 입력해 주세요")
+				$("[name='userName']").focus();	
+			}else if(userEmail == ''){
+				alert("이메일을 입력해 주세요")
+				$("[name='userEmail']").focus();	
+			}else { //모든 칸이 찬 경우
+				document.forms["joinForm"].submit();	
+			}
+			
+			
+			
+		}
+	</script>
 </body>
 </html>

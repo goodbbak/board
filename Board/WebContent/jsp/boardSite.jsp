@@ -22,6 +22,7 @@
 </style>
 </head>
 <body>
+	<%@ include file ="layoutNav.jsp" %>
 	<%
 		//가장 기본 페이지 1로 설정
 		int pageNumber = 1;
@@ -31,8 +32,6 @@
 			pageNumber = Integer.parseInt(request.getParameter("pageNumber"));
 		}
 	%>
-	<%@ include file ="layoutNav.jsp" %>
-	
 	
 	<div class="container">
 		<div class="row">

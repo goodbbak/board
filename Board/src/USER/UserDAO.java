@@ -63,7 +63,7 @@ public class UserDAO {
 				SQL = "SELECT userID FROM user WHERE userEmail = ?";
 				pstat = conn.prepareStatement(SQL);
 				pstat.setString(1, userEmail);
-				rs = pstat.executeQuery(); // 쿼리 실행 결과는 담는 변수
+				rs = pstat.executeQuery(); // 쿼리 실행 결과를 담는 변수
 				if (rs.next()) { // 회원가입시 등록한 이메일이 조회 된다면
 					return 0; // 이메일 중복
 				} else { // 아이디, 이메일 모두 중복 아닌경우

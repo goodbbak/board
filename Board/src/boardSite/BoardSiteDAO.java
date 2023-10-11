@@ -83,15 +83,36 @@ public class BoardSiteDAO {
 		return -1; //DB오류
 	}
 	
-	//선택된 페이지에 해당되는 10개의 게시글을 읽어오도록 함
+	// 총 페이지 수 가져오기
+	public int getTotalPage(){
+		double totalBoard = 0; // 총 게시글 수
+		double totalPage = 0; // 총 페이지 수 
+		String SQL = "SELECT COUNT(*) FROM board"; // 게시글 몇 개인지 조회
+		
+		try {
+			PreparedStatement pstmt = conn.prepareStatement(SQL);
+			rs = pstmt.executeQuery();
+			if(rs.next()){
+				totalBoard = rs.getInt(1);
+				totalPage = Math.ceil(totalBoard/3);
+			}
+		}
+		catch(Exception e){
+			e.printStackTrace();
+		}
+		
+		return (int)totalPage;
+	}
+
+	//선택된 페이지에 해당되는 3개의 게시글을 읽어오도록 함
 	public ArrayList<BoardSite> getList(int pageNumber) {
-		//조회된 기준 boardID로 내림차순하여 위에 10개만 보여주는 쿼리
-		String SQL = "SELECT * FROM BOARD WHERE boardID < ? AND boardAvailable = 1 ORDER BY boardID DESC LIMIT 10";
+		//조회된 기준 boardID로 내림차순하여 위에 3개만 보여주는 쿼리
+		String SQL = "SELECT * FROM board ORDER BY boardID DESC LIMIT 3 OFFSET ?";
 		ArrayList<BoardSite> boardList = new ArrayList<BoardSite>();
 		
 		try {
 			PreparedStatement pstmt = conn.prepareStatement(SQL);
-			pstmt.setInt(1, getNext() - ((pageNumber-1) * 10));
+			pstmt.setInt(1, (pageNumber-1) * 3); // 3개씩 보여주기
 			rs = pstmt.executeQuery();
 			
 			while(rs.next()) {
@@ -109,26 +130,7 @@ public class BoardSiteDAO {
 		}
 		return boardList;
 	}
-	
-	//게시글 수에 따라 페이징 처리하기 위함.
-	public boolean nextPage(int pageNumber) {
-		//조회된 기준 boardID로 내림차순하여 위에 10개만 보여주는 쿼리
-		String SQL = "SELECT * FROM BOARD WHERE boardID < ? AND boardAvailable = 1 ORDER BY boardID DESC LIMIT 10";
-	
-		try {
-			PreparedStatement pstmt = conn.prepareStatement(SQL);
-			pstmt.setInt(1, getNext() - ((pageNumber-1) * 10));
-			rs = pstmt.executeQuery();
-			
-			//다음 버튼을 보여줄지 판단하는 부분
-			while(rs.next()) {	
-				return true;
-			}
-		} catch (Exception e) {
-			e.printStackTrace();
-		}
-		return false;
-	}
+
 	
 	//단건조회
 	public BoardSite getBoard(int boardID) {
